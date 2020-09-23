@@ -4,9 +4,11 @@
 
 	Course: CS 2433-101, Fall 2020, Stringfellow
 
-	Purpose: 
+	Purpose: This program finds the highest (Leftmost) bit of a given
+	         number	of a file and finds the number with the next
+		 highest bit.
 
-*/
+*/--------------------------------------------------------------------
 
 #include <iostream>
 #include <fstream>
@@ -15,7 +17,6 @@
 using namespace std;
 
 const int ONE = 1;
-int ZERO = 0;
 
 int FindHighestBit( int k1);
 int GetK2( int k2, int highestBit);
@@ -25,12 +26,12 @@ int main()
 	ifstream fin;
 	fin.open("HighBits.dat");
 
-	int i = 0;
-	int N;				//Number of test cases, will be read from infile
-	int k = 0;			//The test case number
+	int i = 0;			//Counter for the for-loop
+	int N;				//Number of cases, will be read from infile
+	int k = 0;			//The number itself that will be manipulated
 
-	int highestBit = 0;
-	int k2 = 0;
+	int highestBit = 0;		//The index of the highest bit.
+	int k2 = 0;			//The number with the next highest (Leftmost) bit
 
 	fin >> N;
 
