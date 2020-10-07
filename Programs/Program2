@@ -1,0 +1,60 @@
+/* -------------------------------------------------------------------
+
+	Name: Daniel Portillo
+
+	Course: CS 2433-101, Fall 2020, Stringfellow
+
+	Purpose: This program finds the highest (Leftmost) bit of a given
+			 number	of a file and finds the number with the next
+			 highest bit.
+
+--------------------------------------------------------------------*/
+
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <iterator>
+
+using namespace std;
+
+//void universalSetSetter(set <int> U);
+
+int main()
+{
+	ifstream fin;
+	fin.open("sets.dat");
+
+	int i;
+	int num;
+
+	set <int> A;			//set A
+	set <int> B;			//set B
+	set <int> Universal;	//Universal set
+	set <int> Union;		//Union set
+	set <int> Intersection;	//Intersection
+
+	//universialSetSetter(set <int> U);
+
+
+	for (i; i < 20; i++)
+	{
+		Universal.insert(i);
+	}
+
+	fin >> num;
+
+
+}
+
+/*
+void universalSetSetter(set <int> U)
+{
+	int i=1;
+
+	for (i; i < 20; i++)
+	{
+		U.insert(i);
+	}
+	return;
+}
+*/
