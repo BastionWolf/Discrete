@@ -4,7 +4,8 @@
 
 	Course: CS 2433-101, Fall 2020, Stringfellow
 
-	Purpose:  
+	Purpose: This program conducts set operators on two different
+	sets that it reads in from the file and prints it out
 
 --------------------------------------------------------------------*/
 
@@ -16,12 +17,21 @@
 
 using namespace std;
 
+//Fuction prototypes for all sets and various operations done on them.
+
+//Sets the Universal set (1-20 inclusive)
 void univerSetSetter(set <int>& U);
-void Intersection(set <int> const& A, set <int> const& B, set <int> & Inter);
+//Finds intersection of A B
+void Intersection(set <int> const& A, set <int> const& B, set <int>& Inter);
+//Finds Union of A B
 void Union(set <int> const& A, set <int> const& B, set<int>& Union);
+//Finds A-B 
 void aDiffB(set <int> const& A, set <int> const& B, set<int>& aMinusB);
+//Finds B-A
 void bDiffA(set <int> const& A, set <int> const& B, set<int>& bMinusA);
+//Finds A's complement
 void aComplement(set <int> const& A, set <int> const& U, set<int>& aComp);
+//Finds B's complement
 void bComplement(set <int> const& B, set <int> const& U, set<int>& bComp);
 
 
@@ -31,69 +41,75 @@ int main()
 	ofstream fout;
 	fin.open("sets.dat");
 	fout.open("portillo_sets.txt");
-	
-	int num =0;
+
+	int num = 0;			//Int that saves the vaule from the infile
 
 	set <int> A;			//set A
 	set <int> B;			//set B
 	set <int> U;			//universal set
 	set <int> Uni;			//Union set
 	set <int> Inter;		//Intersection
-	set <int> aMinusB;
-	set <int> bMinusA;
-	set <int> aComp;
-	set <int> bComp;
+	set <int> aMinusB;		//A-B operation set
+	set <int> bMinusA;		//B-A operation set
+	set <int> aComp;		//A's complement set
+	set <int> bComp;		//B's complement set
 
-	set <int>::iterator Itr;
+	set <int>::iterator Itr;	//Iterator for the sets
 
 	fout << "Daniel Portillo\nProgram 2 Sets\n\n";
 
 
-	fin >> num;
-	if (fin.eof())
-	{
+	
+	fin >> num;		//Reads in varable from infile.
+	if (fin.eof())	//if-else makes sure file is not empty, and if so
+	{				//it will print out a message with instructions.
+
 		fout << "Empty Set: Please enter a series of positive intergers\n"
 			<< "with a single space in between them in the file 'portillo'"
-			<< "\norder for them to be included in a set. When you would"
+			<< "\in order for them to be included in a set. When you would"
 			<< "\nlike to make a secondset seperate them with the number"
 			<< "\n '-999' before startingthe second set. Maximum number"
 			<< "of sets is two.\n\n";
 	}
 	else
 	{
-		while (!fin.eof())
+		while (!fin.eof())			//Reads until end of file.
 		{
-			
 
-			if (num == -999)
-			{
-				while (!fin.eof())
+			//If-else checks for sentinel to see when to make the 2nd set.
+			if (num == -999)		
+			{						
+				while (!fin.eof())		//Creates second set (set B)
 				{
 					fin >> num;
 					B.insert(num);
 				}
 			}
-			else
+			else						//Creates first set (set A)
 			{
 				A.insert(num);
 			}
 			fin >> num;
 		}
 
-		univerSetSetter(U);
-		Intersection(A, B, Inter);
-		Union(A, B, Uni);
-		aDiffB(A, B, aMinusB);
-		bDiffA(A, B, bMinusA);
-		aComplement(A, U, aComp);
-		bComplement(B, U, bComp);
+		univerSetSetter(U);				//Call to create Universal set
+		Intersection(A, B, Inter);		//Call to find Intersection
+		Union(A, B, Uni);				//Call to find Union
+		aDiffB(A, B, aMinusB);			//Call to find A-B Difference
+		bDiffA(A, B, bMinusA);			//Call to find B-A Difference
+		aComplement(A, U, aComp);		//Call to find A complement
+		bComplement(B, U, bComp);		//Call to find B complement
+
+
+		//All secessive for loops are used to print out and format
+		//the sets and all operations done on them.
 
 		fout << "Set A = {";
 		for (Itr = A.begin(); Itr != A.end(); ++Itr)
 		{
-			fout  << ' ' << *Itr << ',';
+			fout << ' ' << *Itr << ',';
 		}
-		
+
 		fout << "}\n\nSet B = {";
 		for (Itr = B.begin(); Itr != B.end(); ++Itr)
 		{
@@ -137,10 +153,14 @@ int main()
 		}
 		fout << '}';
 	}
-	
+
+	fin.close();
+	fout.close();
+
 	return 0;
 }
 
+//Creates universal set of 1-20 inclusive
 void univerSetSetter(set <int>& U)
 {
 	int i = 1;
@@ -148,16 +168,15 @@ void univerSetSetter(set <int>& U)
 	for (i = 1; i < 21; i++)
 	{
 		U.insert(i);
-		
+
 	}
 	return;
 }
 
-
-void Intersection(set <int> const& A, set <int> const& B, set <int> &Inter)
+//Finds and saves the Intersection into its own set
+void Intersection(set <int> const& A, set <int> const& B, set <int>& Inter)
 {
-	set <int> Temp;
-
+	set <int> Temp;				//Set used to temporarly hold vaules
 	set <int>::iterator Itr;
 
 	for (Itr = A.begin(); Itr != A.end(); ++Itr)
@@ -171,6 +190,7 @@ void Intersection(set <int> const& A, set <int> const& B, set <int> &Inter)
 		Temp.erase(*Itr);
 	}
 
+	// Subtracts Temp set from Inter set
 	for (Itr = Temp.begin(); Itr != Temp.end(); ++Itr)
 	{
 		Inter.erase(*Itr);
@@ -179,6 +199,8 @@ void Intersection(set <int> const& A, set <int> const& B, set <int> &Inter)
 	return;
 }
 
+//Find and saves the Union into its own set.
+//It adds both A and B sets into Union Set.
 void Union(set <int> const& A, set <int> const& B, set<int>& Union)
 {
 	set <int>::iterator Itr;
@@ -197,7 +219,8 @@ void Union(set <int> const& A, set <int> const& B, set<int>& Union)
 }
 
 
-
+//Find and saves A-B into its own set
+//Saves A set into aMinusB then subtracts B set
 void aDiffB(set <int> const& A, set <int> const& B, set<int>& aMinusB)
 {
 	set <int>::iterator Itr;
@@ -215,6 +238,8 @@ void aDiffB(set <int> const& A, set <int> const& B, set<int>& aMinusB)
 	return;
 }
 
+//Find and saves B-A into its own set.
+//Saves B set into bMinusA then subtracts A set
 void bDiffA(set <int> const& A, set <int> const& B, set<int>& bMinusA)
 {
 	set <int>::iterator Itr;
@@ -232,6 +257,8 @@ void bDiffA(set <int> const& A, set <int> const& B, set<int>& bMinusA)
 	return;
 }
 
+//Find and saves A's complement into its own set.
+//Saves the Universal set into aComp then Subtracts A set
 void aComplement(set <int> const& A, set <int> const& U, set<int>& aComp)
 {
 	set <int>::iterator Itr;
@@ -249,6 +276,8 @@ void aComplement(set <int> const& A, set <int> const& U, set<int>& aComp)
 	return;
 }
 
+//Find and saves B's complement into its own set
+//Saves the Universal set into bComp then Subtracts B set
 void bComplement(set <int> const& B, set <int> const& U, set<int>& bComp)
 {
 	set <int>::iterator Itr;
