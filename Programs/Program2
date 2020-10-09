@@ -4,9 +4,7 @@
 
 	Course: CS 2433-101, Fall 2020, Stringfellow
 
-	Purpose: This program finds the highest (Leftmost) bit of a given
-			 number	of a file and finds the number with the next
-			 highest bit.
+	Purpose:  
 
 --------------------------------------------------------------------*/
 
@@ -14,47 +12,256 @@
 #include <fstream>
 #include <set>
 #include <iterator>
+#include <iomanip>
 
 using namespace std;
 
-//void universalSetSetter(set <int> U);
+void univerSetSetter(set <int>& U);
+void Intersection(set <int> const& A, set <int> const& B, set <int> & Inter);
+void Union(set <int> const& A, set <int> const& B, set<int>& Union);
+void aDiffB(set <int> const& A, set <int> const& B, set<int>& aMinusB);
+void bDiffA(set <int> const& A, set <int> const& B, set<int>& bMinusA);
+void aComplement(set <int> const& A, set <int> const& U, set<int>& aComp);
+void bComplement(set <int> const& B, set <int> const& U, set<int>& bComp);
+
 
 int main()
 {
 	ifstream fin;
+	ofstream fout;
 	fin.open("sets.dat");
-
-	int i;
-	int num;
+	fout.open("portillo_sets.txt");
+	
+	int num =0;
 
 	set <int> A;			//set A
 	set <int> B;			//set B
-	set <int> Universal;	//Universal set
-	set <int> Union;		//Union set
-	set <int> Intersection;	//Intersection
+	set <int> U;			//universal set
+	set <int> Uni;			//Union set
+	set <int> Inter;		//Intersection
+	set <int> aMinusB;
+	set <int> bMinusA;
+	set <int> aComp;
+	set <int> bComp;
 
-	//universialSetSetter(set <int> U);
+	set <int>::iterator Itr;
 
+	fout << "Daniel Portillo\nProgram 2 Sets\n\n";
 
-	for (i; i < 20; i++)
-	{
-		Universal.insert(i);
-	}
 
 	fin >> num;
+	if (fin.eof())
+	{
+		fout << "Empty Set: Please enter a series of positive intergers\n"
+			<< "with a single space in between them in the file 'portillo'"
+			<< "\norder for them to be included in a set. When you would"
+			<< "\nlike to make a secondset seperate them with the number"
+			<< "\n '-999' before startingthe second set. Maximum number"
+			<< "of sets is two.\n\n";
+	}
+	else
+	{
+		while (!fin.eof())
+		{
+			
 
+			if (num == -999)
+			{
+				while (!fin.eof())
+				{
+					fin >> num;
+					B.insert(num);
+				}
+			}
+			else
+			{
+				A.insert(num);
+			}
+			fin >> num;
+		}
 
+		univerSetSetter(U);
+		Intersection(A, B, Inter);
+		Union(A, B, Uni);
+		aDiffB(A, B, aMinusB);
+		bDiffA(A, B, bMinusA);
+		aComplement(A, U, aComp);
+		bComplement(B, U, bComp);
+
+		fout << "Set A = {";
+		for (Itr = A.begin(); Itr != A.end(); ++Itr)
+		{
+			fout  << ' ' << *Itr << ',';
+		}
+		
+		fout << "}\n\nSet B = {";
+		for (Itr = B.begin(); Itr != B.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nThe intersection of Sets A and B = {";
+		for (Itr = Inter.begin(); Itr != Inter.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nThe union of Sets A and B = {";
+		for (Itr = Uni.begin(); Itr != Uni.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nA - B = {";
+		for (Itr = aMinusB.begin(); Itr != aMinusB.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nB - A = {";
+		for (Itr = bMinusA.begin(); Itr != bMinusA.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nA complement = {";
+		for (Itr = aComp.begin(); Itr != aComp.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+
+		fout << "}\n\nB complement = {";
+		for (Itr = bComp.begin(); Itr != bComp.end(); ++Itr)
+		{
+			fout << ' ' << *Itr << ',';
+		}
+		fout << '}';
+	}
+	
+	return 0;
 }
 
-/*
-void universalSetSetter(set <int> U)
+void univerSetSetter(set <int>& U)
 {
-	int i=1;
+	int i = 1;
 
-	for (i; i < 20; i++)
+	for (i = 1; i < 21; i++)
 	{
 		U.insert(i);
+		
 	}
 	return;
 }
-*/
+
+
+void Intersection(set <int> const& A, set <int> const& B, set <int> &Inter)
+{
+	set <int> Temp;
+
+	set <int>::iterator Itr;
+
+	for (Itr = A.begin(); Itr != A.end(); ++Itr)
+	{
+		Temp.insert(*Itr);
+		Inter.insert(*Itr);
+	}
+
+	for (Itr = B.begin(); Itr != B.end(); ++Itr)
+	{
+		Temp.erase(*Itr);
+	}
+
+	for (Itr = Temp.begin(); Itr != Temp.end(); ++Itr)
+	{
+		Inter.erase(*Itr);
+	}
+
+	return;
+}
+
+void Union(set <int> const& A, set <int> const& B, set<int>& Union)
+{
+	set <int>::iterator Itr;
+
+	for (Itr = A.begin(); Itr != A.end(); ++Itr)
+	{
+		Union.insert(*Itr);
+	}
+
+	for (Itr = B.begin(); Itr != B.end(); ++Itr)
+	{
+		Union.insert(*Itr);
+	}
+
+	return;
+}
+
+
+
+void aDiffB(set <int> const& A, set <int> const& B, set<int>& aMinusB)
+{
+	set <int>::iterator Itr;
+
+	for (Itr = A.begin(); Itr != A.end(); ++Itr)
+	{
+		aMinusB.insert(*Itr);
+	}
+
+	for (Itr = B.begin(); Itr != B.end(); ++Itr)
+	{
+		aMinusB.erase(*Itr);
+	}
+
+	return;
+}
+
+void bDiffA(set <int> const& A, set <int> const& B, set<int>& bMinusA)
+{
+	set <int>::iterator Itr;
+
+	for (Itr = B.begin(); Itr != B.end(); ++Itr)
+	{
+		bMinusA.insert(*Itr);
+	}
+
+	for (Itr = A.begin(); Itr != A.end(); ++Itr)
+	{
+		bMinusA.erase(*Itr);
+	}
+
+	return;
+}
+
+void aComplement(set <int> const& A, set <int> const& U, set<int>& aComp)
+{
+	set <int>::iterator Itr;
+
+	for (Itr = U.begin(); Itr != U.end(); ++Itr)
+	{
+		aComp.insert(*Itr);
+	}
+
+	for (Itr = A.begin(); Itr != A.end(); ++Itr)
+	{
+		aComp.erase(*Itr);
+	}
+
+	return;
+}
+
+void bComplement(set <int> const& B, set <int> const& U, set<int>& bComp)
+{
+	set <int>::iterator Itr;
+
+	for (Itr = U.begin(); Itr != U.end(); ++Itr)
+	{
+		bComp.insert(*Itr);
+	}
+
+	for (Itr = B.begin(); Itr != B.end(); ++Itr)
+	{
+		bComp.erase(*Itr);
+	}
+
+	return;
+}
